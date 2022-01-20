@@ -2,7 +2,7 @@ package com.example.springboot.model;
 
 public class Account {
     private String accountCode;
-    private String bicCode;
+    private String bicCode = "";
 
 
     // Getter Methods

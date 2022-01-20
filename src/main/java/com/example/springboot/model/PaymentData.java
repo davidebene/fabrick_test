@@ -2,15 +2,15 @@ package com.example.springboot.model;
 
 public class PaymentData {
     Creditor CreditorObject;
-    private String executionDate;
+    private String executionDate = "2019-04-01";
     private String uri;
     private String description;
-    private float amount;
+    private Long amount;
     private String currency;
     private boolean isUrgent;
     private boolean isInstant;
-    private String feeType;
-    private String feeAccountId;
+    private String feeType = "";
+    private String feeAccountId = "45685475";
     TaxRelief TaxReliefObject;
 
 
@@ -32,7 +32,7 @@ public class PaymentData {
         return description;
     }
 
-    public float getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
@@ -78,7 +78,7 @@ public class PaymentData {
         this.description = description;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 
