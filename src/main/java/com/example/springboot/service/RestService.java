@@ -28,6 +28,7 @@ public class RestService {
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.set("Auth-Schema", apiSchema);
         headers.set("Api-Key", apiKey);
+        headers.set("X-Time-Zone", "Europe/Rome");
 
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<String> responseEntity = restTemplate

@@ -78,4 +78,12 @@ public class Transaction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "valueDate='" + valueDate + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

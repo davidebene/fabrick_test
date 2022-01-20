@@ -42,4 +42,12 @@ public class AccountBalance extends BaseEntity<AccountBalance> {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
+    @Override
+    public String toString() {
+        return "Balance{" +
+                "balance='" + balance + '\'' +
+                ", availableBalance=" + availableBalance +
+                '}';
+    }
 }
