@@ -49,7 +49,6 @@ public class AccountController {
 	public ResponseEntity<?> postMoneyTransfer(@PathVariable String accountId , @RequestBody PaymentData paymentData) throws JsonProcessingException {
 		String path = String.format("%s/payments/money-transfers", accountId);
 
-		String body = new ObjectMapper().writeValueAsString(paymentData);
 		String result = restService.postResponseEntity(path, paymentData);
 
 		MoneyTransfer transfer = new ObjectMapper().readValue(result, MoneyTransfer.class);

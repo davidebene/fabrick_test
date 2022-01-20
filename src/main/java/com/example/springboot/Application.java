@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -32,13 +34,17 @@ public class Application {
             System.out.print("Enter your account Id: ");
             String accountId = scanner.next();
 
-            AccountBalance balance = restTemplate.getForObject(
-                    String.format("http://localhost:8080/account/%s/balance", accountId), AccountBalance.class);
-            System.out.println(balance.getPayload().toString());
+            try {
+                AccountBalance balance = restTemplate.getForObject(
+                        String.format("http://localhost:8080/account/%s/balance", accountId), AccountBalance.class);
+                System.out.println(balance.getPayload().toString());
 
-            AccountTransaction transactions = restTemplate.getForObject(
-                    String.format("http://localhost:8080/account/%s/transactions", accountId), AccountTransaction.class);
-            System.out.println(transactions.getPayload().toString());
+                AccountTransaction transactions = restTemplate.getForObject(
+                        String.format("http://localhost:8080/account/%s/transactions", accountId), AccountTransaction.class);
+                System.out.println(transactions.getPayload().toString());
+            } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
+                System.out.println("account Id wrong syntax or not found");
+            }
 
             PaymentData data = new PaymentData();
             Creditor creditor = new Creditor();
@@ -63,8 +69,14 @@ public class Application {
             data.setDescription(description);
 
             System.out.print("Enter transfer amount: ");
-            String amount = scanner.next();
-            data.setAmount(Long.valueOf(amount));
+            if (scanner.hasNextLong()) {
+                Long amount = scanner.nextLong();
+                data.setAmount(amount);
+            }
+            else
+            {
+                data.setAmount(0L);
+            }
 
             System.out.print("Enter transfer currency: ");
             String currency = scanner.next();
@@ -86,18 +98,17 @@ public class Application {
             String benType = scanner.next();
             taxRelief.setBeneficiaryType(benType);
 
-            if(benType.toUpperCase().equals("NATURAL_PERSON")) {
-				System.out.print("Enter beneficiary FiscalCode: ");
-				String beneficiaryFiscalCode = scanner.next();
-				naturalPersonBeneficiary.setFiscalCode1(beneficiaryFiscalCode);
-			}
-            else {
-				System.out.print("Enter P.IVA: ");
-				String piva = scanner.next();
-				legalPersonBeneficiary.setFiscalCode(piva);
-			}
+            if (benType.toUpperCase().equals("NATURAL_PERSON")) {
+                System.out.print("Enter beneficiary FiscalCode: ");
+                String beneficiaryFiscalCode = scanner.next();
+                naturalPersonBeneficiary.setFiscalCode1(beneficiaryFiscalCode);
+            } else {
+                System.out.print("Enter P.IVA: ");
+                String piva = scanner.next();
+                legalPersonBeneficiary.setFiscalCode(piva);
+            }
 
-			taxRelief.setNaturalPersonBeneficiary(naturalPersonBeneficiary);
+            taxRelief.setNaturalPersonBeneficiary(naturalPersonBeneficiary);
             taxRelief.setLegalPersonBeneficiary(legalPersonBeneficiary);
             data.setTaxRelief(taxRelief);
 
