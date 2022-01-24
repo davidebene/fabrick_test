@@ -1,5 +1,6 @@
 package com.example.springboot.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ public class RestService<T> {
     @Value("${api.host.apiKey}")
     private String apiKey;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     public String getResponseEntity(String path) {
-        RestTemplate restTemplate = new RestTemplate();
 
         String uri = String.format("%s%s", apiHost, path);
 
@@ -38,7 +41,6 @@ public class RestService<T> {
     }
 
     public String postResponseEntity(String path, T body) {
-        RestTemplate restTemplate = new RestTemplate();
 
         String uri = String.format("%s%s", apiHost, path);
 
